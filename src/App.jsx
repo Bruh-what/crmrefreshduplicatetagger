@@ -1,7 +1,24 @@
 import React from "react";
 import SimpleDuplicateTagger from "./components/SimpleDuplicateTagger";
+import AdminPanel from "./components/AdminPanel";
+import TokenGeneratorApp from "./TokenGeneratorApp";
 
 function App() {
+  // Check URL parameters for different modes
+  const urlParams = new URLSearchParams(window.location.search);
+  const isAdminMode = urlParams.get("admin") === "true";
+  const isTokenGeneratorMode = urlParams.get("tokens") === "true";
+
+  // If admin mode, show admin panel
+  if (isAdminMode) {
+    return <AdminPanel />;
+  }
+
+  // If token generator mode, show just the token generator
+  if (isTokenGeneratorMode) {
+    return <TokenGeneratorApp />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
       {/* Header - Commented Out */}

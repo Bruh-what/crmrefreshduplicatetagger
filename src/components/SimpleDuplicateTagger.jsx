@@ -6,6 +6,8 @@ const SimpleDuplicateTagger = () => {
   const [processing, setProcessing] = useState(false);
   const [results, setResults] = useState(null);
   const [logs, setLogs] = useState([]);
+  const [tokenCode, setTokenCode] = useState("");
+  const [tokenValid, setTokenValid] = useState(false);
 
   const addLog = (message) => {
     setLogs((prev) => [
@@ -95,8 +97,261 @@ const SimpleDuplicateTagger = () => {
     return score;
   };
 
+  // Hardcoded valid tokens - you can generate these offline
+  const VALID_TOKENS = [
+    "TEST960-JLP-ACTIVE",
+    "TEST967-CQ5-ACTIVE",
+    "BATCH248-0H1-ACTIVE",
+    "PREMIUM560-1CU-ACTIVE",
+    "DEMO968-5DA-ACTIVE",
+    "BATCH914-TS5-ACTIVE",
+    "TEST945-B38-ACTIVE",
+    "BATCH487-RRG-ACTIVE",
+    "TOKEN686-U99-ACTIVE",
+    "DEMO653-97A-ACTIVE",
+    "DEMO146-G0I-ACTIVE",
+    "DEMO133-SJG-ACTIVE",
+    "TOKEN691-XT2-ACTIVE",
+    "BATCH668-69D-ACTIVE",
+    "DEMO142-TWW-ACTIVE",
+    "BATCH419-WEY-ACTIVE",
+    "TOKEN178-6LW-ACTIVE",
+    "TEST605-NVR-ACTIVE",
+    "DEMO032-7GC-ACTIVE",
+    "DEMO060-4K7-ACTIVE",
+    "TEST348-JAR-ACTIVE",
+    "TOKEN115-QMO-ACTIVE",
+    "TOKEN540-H01-ACTIVE",
+    "TOKEN805-AMU-ACTIVE",
+    "TOKEN282-0BH-ACTIVE",
+    "DEMO012-BGD-ACTIVE",
+    "DEMO144-OE5-ACTIVE",
+    "TOKEN728-K1J-ACTIVE",
+    "TEST012-ZLI-ACTIVE",
+    "PREMIUM477-844-ACTIVE",
+    "DEMO774-END-ACTIVE",
+    "TEST247-LXT-ACTIVE",
+    "TOKEN888-PFY-ACTIVE",
+    "DEMO286-3G2-ACTIVE",
+    "TEST145-T0K-ACTIVE",
+    "TEST108-3JP-ACTIVE",
+    "PREMIUM709-APK-ACTIVE",
+    "PREMIUM870-8BC-ACTIVE",
+    "DEMO286-PYP-ACTIVE",
+    "PREMIUM216-LCO-ACTIVE",
+    "BATCH746-V0K-ACTIVE",
+    "BATCH838-AXE-ACTIVE",
+    "TOKEN807-J9K-ACTIVE",
+    "TEST409-YMU-ACTIVE",
+    "PREMIUM592-LR7-ACTIVE",
+    "PREMIUM446-ZR3-ACTIVE",
+    "TEST588-RNV-ACTIVE",
+    "DEMO187-ZBH-ACTIVE",
+    "TEST425-EW3-ACTIVE",
+    "TEST890-YET-ACTIVE",
+    "BATCH094-HD7-ACTIVE",
+    "BATCH355-I5F-ACTIVE",
+    "PREMIUM165-I20-ACTIVE",
+    "PREMIUM372-T0X-ACTIVE",
+    "BATCH026-WFR-ACTIVE",
+    "DEMO402-RG1-ACTIVE",
+    "DEMO743-6WC-ACTIVE",
+    "DEMO667-L4Z-ACTIVE",
+    "TOKEN191-2KS-ACTIVE",
+    "PREMIUM678-FL4-ACTIVE",
+    "PREMIUM648-K97-ACTIVE",
+    "BATCH514-XLA-ACTIVE",
+    "DEMO212-3N5-ACTIVE",
+    "PREMIUM294-XSM-ACTIVE",
+    "TEST576-OMK-ACTIVE",
+    "BATCH298-5QW-ACTIVE",
+    "TOKEN461-G7D-ACTIVE",
+    "DEMO315-413-ACTIVE",
+    "PREMIUM864-KN6-ACTIVE",
+    "PREMIUM140-YVM-ACTIVE",
+    "TOKEN618-B2H-ACTIVE",
+    "DEMO527-KJH-ACTIVE",
+    "BATCH013-3C8-ACTIVE",
+    "PREMIUM452-5VT-ACTIVE",
+    "TEST996-6V0-ACTIVE",
+    "TOKEN775-IU1-ACTIVE",
+    "PREMIUM734-84Q-ACTIVE",
+    "PREMIUM745-SG9-ACTIVE",
+    "BATCH193-4WO-ACTIVE",
+    "TEST070-0VD-ACTIVE",
+    "TOKEN587-DUY-ACTIVE",
+    "BATCH996-ZQ5-ACTIVE",
+    "BATCH388-QUR-ACTIVE",
+    "BATCH235-D5W-ACTIVE",
+    "DEMO679-BCZ-ACTIVE",
+    "BATCH146-8CV-ACTIVE",
+    "BATCH485-P6E-ACTIVE",
+    "PREMIUM942-4PW-ACTIVE",
+    "DEMO019-HTC-ACTIVE",
+    "DEMO351-QHL-ACTIVE",
+    "TOKEN494-H3P-ACTIVE",
+    "DEMO253-BLW-ACTIVE",
+    "PREMIUM033-5BK-ACTIVE",
+    "DEMO739-JDT-ACTIVE",
+    "PREMIUM542-ELO-ACTIVE",
+    "BATCH915-4IX-ACTIVE",
+    "TOKEN968-TGC-ACTIVE",
+    "TOKEN655-21F-ACTIVE",
+    "BATCH405-4W6-ACTIVE",
+    "TEST876-S6N-ACTIVE",
+    "PREMIUM327-Z4H-ACTIVE",
+    "TEST266-VTG-ACTIVE",
+    "TOKEN765-B5C-ACTIVE",
+    "BATCH060-X07-ACTIVE",
+    "TOKEN180-6ZG-ACTIVE",
+    "TOKEN305-NXH-ACTIVE",
+    "PREMIUM269-MN2-ACTIVE",
+    "TEST084-VHT-ACTIVE",
+    "DEMO802-38Z-ACTIVE",
+    "PREMIUM856-QNJ-ACTIVE",
+    "PREMIUM056-HHN-ACTIVE",
+    "PREMIUM306-2Q1-ACTIVE",
+    "BATCH910-DRK-ACTIVE",
+    "TOKEN499-V1B-ACTIVE",
+    "DEMO162-ZGR-ACTIVE",
+    "BATCH213-Q8A-ACTIVE",
+    "DEMO375-D6T-ACTIVE",
+    "BATCH527-HRS-ACTIVE",
+    "TOKEN965-NZ6-ACTIVE",
+    "BATCH307-Y21-ACTIVE",
+    "PREMIUM744-W7I-ACTIVE",
+    "DEMO514-28H-ACTIVE",
+    "DEMO600-LJW-ACTIVE",
+    "PREMIUM023-YVG-ACTIVE",
+    "BATCH911-S46-ACTIVE",
+    "TEST746-4FT-ACTIVE",
+    "PREMIUM717-S7E-ACTIVE",
+    "PREMIUM766-M75-ACTIVE",
+    "PREMIUM953-UH7-ACTIVE",
+    "PREMIUM028-I5S-ACTIVE",
+    "TOKEN389-YB1-ACTIVE",
+    "DEMO841-M0T-ACTIVE",
+    "DEMO912-CIG-ACTIVE",
+    "TOKEN914-P3L-ACTIVE",
+    "TOKEN388-EOL-ACTIVE",
+    "DEMO009-MIJ-ACTIVE",
+    "PREMIUM318-DHX-ACTIVE",
+    "DEMO365-S13-ACTIVE",
+    "PREMIUM359-4YA-ACTIVE",
+    "BATCH782-W7U-ACTIVE",
+    "TEST430-EK4-ACTIVE",
+    "BATCH636-ILI-ACTIVE",
+    "TEST565-XN5-ACTIVE",
+    "BATCH013-QFC-ACTIVE",
+    "TOKEN021-3VX-ACTIVE",
+    "TOKEN089-SW6-ACTIVE",
+    "TEST512-8J8-ACTIVE",
+    "TEST981-6PC-ACTIVE",
+    "BATCH758-PQE-ACTIVE",
+    "PREMIUM507-DUH-ACTIVE",
+    "BATCH513-AQQ-ACTIVE",
+    "PREMIUM320-W53-ACTIVE",
+    "BATCH397-QJQ-ACTIVE",
+    "TEST142-MPQ-ACTIVE",
+    "BATCH070-5VI-ACTIVE",
+    "DEMO671-WOC-ACTIVE",
+    "PREMIUM729-J45-ACTIVE",
+    "PREMIUM216-9JG-ACTIVE",
+    "TOKEN957-BSZ-ACTIVE",
+    "DEMO138-JD3-ACTIVE",
+  ];
+  // Used tokens - stored in localStorage to persist across page refreshes
+  const [usedTokens, setUsedTokens] = useState(() => {
+    try {
+      const stored = localStorage.getItem("dupeTagger_usedTokens");
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error("Error loading used tokens from localStorage:", error);
+      return [];
+    }
+  });
+
+  // Validate token code via server API
+  const validateToken = async (token) => {
+    const trimmedToken = token ? token.trim().toUpperCase() : "";
+
+    if (!trimmedToken) {
+      setTokenValid(false);
+      return false;
+    }
+
+    try {
+      const response = await fetch("/api/validate-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: trimmedToken,
+          action: "validate",
+        }),
+      });
+
+      const result = await response.json();
+      const isValid = result.valid;
+
+      setTokenValid(isValid);
+      return isValid;
+    } catch (error) {
+      console.error("Token validation error:", error);
+      // Fallback to local validation if server is unavailable
+      const isValidFormat = VALID_TOKENS.includes(trimmedToken);
+      const isNotUsed = !usedTokens.includes(trimmedToken);
+      const isValid = isValidFormat && isNotUsed;
+
+      setTokenValid(isValid);
+      return isValid;
+    }
+  };
+
+  const handleTokenChange = async (e) => {
+    const token = e.target.value;
+
+    // Hidden admin function to clear used tokens
+    if (token.toUpperCase() === "RESET-USED-TOKENS-ADMIN") {
+      try {
+        const response = await fetch("/api/validate-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-key": prompt("Enter admin key:") || "",
+          },
+          body: JSON.stringify({
+            action: "reset",
+          }),
+        });
+
+        if (response.ok) {
+          setUsedTokens([]);
+          localStorage.removeItem("dupeTagger_usedTokens");
+          setTokenCode("");
+          alert("All used tokens have been reset on server!");
+        } else {
+          alert("Failed to reset tokens - unauthorized or server error");
+        }
+      } catch (error) {
+        alert("Failed to reset tokens - server error");
+      }
+      return;
+    }
+
+    setTokenCode(token);
+
+    // Debounce the validation to avoid too many API calls
+    if (token.trim().length >= 6) {
+      setTimeout(() => validateToken(token), 500);
+    } else {
+      setTokenValid(false);
+    }
+  };
+
   const processFile = async () => {
-    if (!file) return;
+    if (!file || !tokenValid) return;
 
     setProcessing(true);
     setLogs([]);
@@ -272,6 +527,53 @@ const SimpleDuplicateTagger = () => {
         recordsWithNames: recordsWithNames,
         recordsWithoutNames: recordsWithoutNames,
       });
+
+      // Token consumed successfully - invalidate it on server
+      addLog(`\n=== TOKEN CONSUMED ===`);
+      addLog(`Token "${tokenCode}" has been used and is no longer valid`);
+
+      const consumedToken = tokenCode.trim().toUpperCase();
+
+      try {
+        // Consume token on server
+        const response = await fetch("/api/validate-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: consumedToken,
+            action: "consume",
+          }),
+        });
+
+        if (response.ok) {
+          addLog(`Token successfully consumed on server`);
+        } else {
+          addLog(
+            `Warning: Token consumption failed on server, but processing completed locally`
+          );
+        }
+      } catch (error) {
+        console.error("Error consuming token on server:", error);
+        addLog(`Warning: Could not reach server to consume token`);
+      }
+
+      // Also keep local record as backup
+      const newUsedTokens = [...usedTokens, consumedToken];
+      setUsedTokens(newUsedTokens);
+
+      try {
+        localStorage.setItem(
+          "dupeTagger_usedTokens",
+          JSON.stringify(newUsedTokens)
+        );
+      } catch (error) {
+        console.error("Error saving used tokens to localStorage:", error);
+      }
+
+      setTokenCode("");
+      setTokenValid(false);
     } catch (error) {
       addLog(`Error: ${error.message}`);
       console.error("Processing error:", error);
@@ -739,9 +1041,82 @@ const SimpleDuplicateTagger = () => {
             className="block w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:transition-colors file:cursor-pointer border-2 border-dashed border-gray-200 rounded-xl p-6 hover:border-blue-300 transition-colors"
           />
 
+          {/* Token Input - Only show after file is selected */}
+          {file && (
+            <div className="space-y-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <div className="flex items-start">
+                  <div className="text-blue-800">
+                    <p className="font-semibold text-lg mb-2">
+                      🔑 Token Required
+                    </p>
+                    <p className="text-sm mb-4">
+                      Enter your processing token to continue. Each token allows
+                      you to process one CSV file.
+                    </p>
+                    {usedTokens.length > 0 && (
+                      <p className="text-xs text-blue-600 mt-2">
+                        {usedTokens.length} token
+                        {usedTokens.length !== 1 ? "s" : ""} used so far
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="token"
+                  className="block text-sm font-semibold text-gray-700"
+                >
+                  Processing Token
+                </label>
+                <input
+                  id="token"
+                  type="text"
+                  value={tokenCode}
+                  onChange={handleTokenChange}
+                  placeholder="Enter your processing token (minimum 6 characters)"
+                  className={`w-full px-4 py-3 rounded-xl border-2 transition-colors focus:outline-none focus:ring-0 ${
+                    tokenCode === ""
+                      ? "border-gray-300 focus:border-blue-500"
+                      : tokenValid
+                      ? "border-green-300 bg-green-50 focus:border-green-500"
+                      : "border-red-300 bg-red-50 focus:border-red-500"
+                  }`}
+                />
+                {tokenCode && !tokenValid && (
+                  <p className="text-sm text-red-600">
+                    {usedTokens.includes(tokenCode.trim().toUpperCase())
+                      ? "This token has already been used"
+                      : "Invalid token - please check your token code"}
+                  </p>
+                )}
+                {tokenValid && (
+                  <p className="text-sm text-green-600 flex items-center">
+                    <svg
+                      className="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Valid token - ready to process!
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
           <button
             onClick={processFile}
-            disabled={!file || processing}
+            disabled={!file || !tokenValid || processing}
             className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-8 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
           >
             {processing ? (
@@ -750,7 +1125,26 @@ const SimpleDuplicateTagger = () => {
                 Processing...
               </div>
             ) : (
-              "🚀 Tag Duplicates"
+              <div className="flex items-center justify-center">
+                {!file
+                  ? "Select CSV File First"
+                  : !tokenValid
+                  ? "Enter Valid Token"
+                  : "Tag Duplicates"}
+                <svg
+                  className="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
             )}
           </button>
         </div>
@@ -825,12 +1219,14 @@ const SimpleDuplicateTagger = () => {
           {/* Merge Section */}
           <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl shadow-sm border border-amber-200 p-8">
             <h2 className="text-2xl font-bold mb-4 text-gray-900">
-              � Merge Duplicates
+              Merge Duplicates
             </h2>
             <p className="text-gray-600 mb-6 text-lg leading-relaxed">
               Merge duplicate records into their master records. This will
               consolidate emails, phone numbers, and other data from duplicates
-              into the master record with the highest information score.
+              into the master record with the highest information score. Master
+              records are automatically selected based on data completeness
+              (most filled fields wins).
             </p>
 
             {!results.hasMerged ? (
@@ -877,7 +1273,22 @@ const SimpleDuplicateTagger = () => {
                         Merging...
                       </div>
                     ) : (
-                      "🔄 Merge Duplicates"
+                      <div className="flex items-center justify-center">
+                        Merge Duplicates
+                        <svg
+                          className="w-4 h-4 ml-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
                     )}
                   </button>
                 </div>
@@ -912,13 +1323,48 @@ const SimpleDuplicateTagger = () => {
                     onClick={exportMergedResults}
                     className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
-                    📥 Export Merged Data
+                    <div className="flex items-center justify-center">
+                      Export Merged Data
+                      <svg
+                        className="w-4 h-4 ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
                   </button>
                   <button
-                    onClick={() => window.location.reload()}
+                    onClick={() =>
+                      window.open(
+                        "https://crmrefresh.org/DupeTaggerDIY",
+                        "_blank"
+                      )
+                    }
                     className="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
-                    🔄 Start Over
+                    <div className="flex items-center justify-center">
+                      Get Another Token
+                      <svg
+                        className="w-4 h-4 ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
                   </button>
                 </div>
               </div>
