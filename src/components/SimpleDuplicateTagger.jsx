@@ -97,168 +97,171 @@ const SimpleDuplicateTagger = () => {
     return score;
   };
 
+  // God token - never expires, always valid, for admin use
+  const GOD_TOKEN = "ADMIN-GOD-TOKEN-NEVER-EXPIRES";
+
   // Hardcoded valid tokens - you can generate these offline
   const VALID_TOKENS = [
-    "TEST960-JLP-ACTIVE",
-    "TEST967-CQ5-ACTIVE",
-    "BATCH248-0H1-ACTIVE",
-    "PREMIUM560-1CU-ACTIVE",
-    "DEMO968-5DA-ACTIVE",
-    "BATCH914-TS5-ACTIVE",
-    "TEST945-B38-ACTIVE",
-    "BATCH487-RRG-ACTIVE",
-    "TOKEN686-U99-ACTIVE",
-    "DEMO653-97A-ACTIVE",
-    "DEMO146-G0I-ACTIVE",
-    "DEMO133-SJG-ACTIVE",
-    "TOKEN691-XT2-ACTIVE",
-    "BATCH668-69D-ACTIVE",
-    "DEMO142-TWW-ACTIVE",
-    "BATCH419-WEY-ACTIVE",
-    "TOKEN178-6LW-ACTIVE",
-    "TEST605-NVR-ACTIVE",
-    "DEMO032-7GC-ACTIVE",
-    "DEMO060-4K7-ACTIVE",
-    "TEST348-JAR-ACTIVE",
-    "TOKEN115-QMO-ACTIVE",
-    "TOKEN540-H01-ACTIVE",
-    "TOKEN805-AMU-ACTIVE",
-    "TOKEN282-0BH-ACTIVE",
-    "DEMO012-BGD-ACTIVE",
-    "DEMO144-OE5-ACTIVE",
-    "TOKEN728-K1J-ACTIVE",
-    "TEST012-ZLI-ACTIVE",
-    "PREMIUM477-844-ACTIVE",
-    "DEMO774-END-ACTIVE",
-    "TEST247-LXT-ACTIVE",
-    "TOKEN888-PFY-ACTIVE",
-    "DEMO286-3G2-ACTIVE",
-    "TEST145-T0K-ACTIVE",
-    "TEST108-3JP-ACTIVE",
-    "PREMIUM709-APK-ACTIVE",
-    "PREMIUM870-8BC-ACTIVE",
-    "DEMO286-PYP-ACTIVE",
-    "PREMIUM216-LCO-ACTIVE",
-    "BATCH746-V0K-ACTIVE",
-    "BATCH838-AXE-ACTIVE",
-    "TOKEN807-J9K-ACTIVE",
-    "TEST409-YMU-ACTIVE",
-    "PREMIUM592-LR7-ACTIVE",
-    "PREMIUM446-ZR3-ACTIVE",
-    "TEST588-RNV-ACTIVE",
-    "DEMO187-ZBH-ACTIVE",
-    "TEST425-EW3-ACTIVE",
-    "TEST890-YET-ACTIVE",
-    "BATCH094-HD7-ACTIVE",
-    "BATCH355-I5F-ACTIVE",
-    "PREMIUM165-I20-ACTIVE",
-    "PREMIUM372-T0X-ACTIVE",
-    "BATCH026-WFR-ACTIVE",
-    "DEMO402-RG1-ACTIVE",
-    "DEMO743-6WC-ACTIVE",
-    "DEMO667-L4Z-ACTIVE",
-    "TOKEN191-2KS-ACTIVE",
-    "PREMIUM678-FL4-ACTIVE",
-    "PREMIUM648-K97-ACTIVE",
-    "BATCH514-XLA-ACTIVE",
-    "DEMO212-3N5-ACTIVE",
-    "PREMIUM294-XSM-ACTIVE",
-    "TEST576-OMK-ACTIVE",
-    "BATCH298-5QW-ACTIVE",
-    "TOKEN461-G7D-ACTIVE",
-    "DEMO315-413-ACTIVE",
-    "PREMIUM864-KN6-ACTIVE",
-    "PREMIUM140-YVM-ACTIVE",
-    "TOKEN618-B2H-ACTIVE",
-    "DEMO527-KJH-ACTIVE",
-    "BATCH013-3C8-ACTIVE",
-    "PREMIUM452-5VT-ACTIVE",
-    "TEST996-6V0-ACTIVE",
-    "TOKEN775-IU1-ACTIVE",
-    "PREMIUM734-84Q-ACTIVE",
-    "PREMIUM745-SG9-ACTIVE",
-    "BATCH193-4WO-ACTIVE",
-    "TEST070-0VD-ACTIVE",
-    "TOKEN587-DUY-ACTIVE",
-    "BATCH996-ZQ5-ACTIVE",
-    "BATCH388-QUR-ACTIVE",
-    "BATCH235-D5W-ACTIVE",
-    "DEMO679-BCZ-ACTIVE",
-    "BATCH146-8CV-ACTIVE",
-    "BATCH485-P6E-ACTIVE",
-    "PREMIUM942-4PW-ACTIVE",
-    "DEMO019-HTC-ACTIVE",
-    "DEMO351-QHL-ACTIVE",
-    "TOKEN494-H3P-ACTIVE",
-    "DEMO253-BLW-ACTIVE",
-    "PREMIUM033-5BK-ACTIVE",
-    "DEMO739-JDT-ACTIVE",
-    "PREMIUM542-ELO-ACTIVE",
-    "BATCH915-4IX-ACTIVE",
-    "TOKEN968-TGC-ACTIVE",
-    "TOKEN655-21F-ACTIVE",
-    "BATCH405-4W6-ACTIVE",
-    "TEST876-S6N-ACTIVE",
-    "PREMIUM327-Z4H-ACTIVE",
-    "TEST266-VTG-ACTIVE",
-    "TOKEN765-B5C-ACTIVE",
-    "BATCH060-X07-ACTIVE",
-    "TOKEN180-6ZG-ACTIVE",
-    "TOKEN305-NXH-ACTIVE",
-    "PREMIUM269-MN2-ACTIVE",
-    "TEST084-VHT-ACTIVE",
-    "DEMO802-38Z-ACTIVE",
-    "PREMIUM856-QNJ-ACTIVE",
-    "PREMIUM056-HHN-ACTIVE",
-    "PREMIUM306-2Q1-ACTIVE",
-    "BATCH910-DRK-ACTIVE",
-    "TOKEN499-V1B-ACTIVE",
-    "DEMO162-ZGR-ACTIVE",
-    "BATCH213-Q8A-ACTIVE",
-    "DEMO375-D6T-ACTIVE",
-    "BATCH527-HRS-ACTIVE",
-    "TOKEN965-NZ6-ACTIVE",
-    "BATCH307-Y21-ACTIVE",
-    "PREMIUM744-W7I-ACTIVE",
-    "DEMO514-28H-ACTIVE",
-    "DEMO600-LJW-ACTIVE",
-    "PREMIUM023-YVG-ACTIVE",
-    "BATCH911-S46-ACTIVE",
-    "TEST746-4FT-ACTIVE",
-    "PREMIUM717-S7E-ACTIVE",
-    "PREMIUM766-M75-ACTIVE",
-    "PREMIUM953-UH7-ACTIVE",
-    "PREMIUM028-I5S-ACTIVE",
-    "TOKEN389-YB1-ACTIVE",
-    "DEMO841-M0T-ACTIVE",
-    "DEMO912-CIG-ACTIVE",
-    "TOKEN914-P3L-ACTIVE",
-    "TOKEN388-EOL-ACTIVE",
-    "DEMO009-MIJ-ACTIVE",
-    "PREMIUM318-DHX-ACTIVE",
-    "DEMO365-S13-ACTIVE",
-    "PREMIUM359-4YA-ACTIVE",
-    "BATCH782-W7U-ACTIVE",
-    "TEST430-EK4-ACTIVE",
-    "BATCH636-ILI-ACTIVE",
-    "TEST565-XN5-ACTIVE",
-    "BATCH013-QFC-ACTIVE",
-    "TOKEN021-3VX-ACTIVE",
-    "TOKEN089-SW6-ACTIVE",
-    "TEST512-8J8-ACTIVE",
-    "TEST981-6PC-ACTIVE",
-    "BATCH758-PQE-ACTIVE",
-    "PREMIUM507-DUH-ACTIVE",
-    "BATCH513-AQQ-ACTIVE",
-    "PREMIUM320-W53-ACTIVE",
-    "BATCH397-QJQ-ACTIVE",
-    "TEST142-MPQ-ACTIVE",
-    "BATCH070-5VI-ACTIVE",
-    "DEMO671-WOC-ACTIVE",
-    "PREMIUM729-J45-ACTIVE",
-    "PREMIUM216-9JG-ACTIVE",
-    "TOKEN957-BSZ-ACTIVE",
-    "DEMO138-JD3-ACTIVE",
+    "TOKEN347-KR8-ACTIVE",
+    "BATCH892-ZN4-ACTIVE",
+    "PREMIUM158-WQ2-ACTIVE",
+    "TEST741-HM9-ACTIVE",
+    "DEMO523-FV7-ACTIVE",
+    "TOKEN619-XL3-ACTIVE",
+    "BATCH274-GP6-ACTIVE",
+    "PREMIUM936-BT1-ACTIVE",
+    "TEST485-YC5-ACTIVE",
+    "DEMO167-JK0-ACTIVE",
+    "TOKEN892-DP4-ACTIVE",
+    "BATCH531-RW8-ACTIVE",
+    "PREMIUM704-MH2-ACTIVE",
+    "TEST256-NS7-ACTIVE",
+    "DEMO638-AE1-ACTIVE",
+    "TOKEN415-VZ9-ACTIVE",
+    "BATCH109-LX3-ACTIVE",
+    "PREMIUM827-QF6-ACTIVE",
+    "TEST964-IU0-ACTIVE",
+    "DEMO372-WK5-ACTIVE",
+    "TOKEN583-BP8-ACTIVE",
+    "BATCH746-YR2-ACTIVE",
+    "PREMIUM291-DM7-ACTIVE",
+    "TEST809-GN1-ACTIVE",
+    "DEMO456-TH4-ACTIVE",
+    "TOKEN128-SC9-ACTIVE",
+    "BATCH673-PL3-ACTIVE",
+    "PREMIUM549-XV6-ACTIVE",
+    "TEST932-JW0-ACTIVE",
+    "DEMO215-AK5-ACTIVE",
+    "TOKEN794-FQ8-ACTIVE",
+    "BATCH368-RD2-ACTIVE",
+    "PREMIUM082-MZ7-ACTIVE",
+    "TEST527-BN1-ACTIVE",
+    "DEMO691-HU4-ACTIVE",
+    "TOKEN246-VC9-ACTIVE",
+    "BATCH913-LP3-ACTIVE",
+    "PREMIUM475-YG6-ACTIVE",
+    "TEST158-WT0-ACTIVE",
+    "DEMO824-JE5-ACTIVE",
+    "TOKEN637-PK8-ACTIVE",
+    "BATCH491-DR2-ACTIVE",
+    "PREMIUM763-XM7-ACTIVE",
+    "TEST385-AN1-ACTIVE",
+    "DEMO972-SH4-ACTIVE",
+    "TOKEN514-FU9-ACTIVE",
+    "BATCH259-BW3-ACTIVE",
+    "PREMIUM628-QC6-ACTIVE",
+    "TEST746-VL0-ACTIVE",
+    "DEMO103-IR5-ACTIVE",
+    "TOKEN871-MG8-ACTIVE",
+    "BATCH432-YP2-ACTIVE",
+    "PREMIUM195-DN7-ACTIVE",
+    "TEST689-HT1-ACTIVE",
+    "DEMO347-JK4-ACTIVE",
+    "TOKEN926-SX9-ACTIVE",
+    "BATCH564-AZ3-ACTIVE",
+    "PREMIUM839-FQ6-ACTIVE",
+    "TEST271-RV0-ACTIVE",
+    "DEMO715-BM5-ACTIVE",
+    "TOKEN458-WE8-ACTIVE",
+    "BATCH182-PN2-ACTIVE",
+    "PREMIUM607-LC7-ACTIVE",
+    "TEST943-YH1-ACTIVE",
+    "DEMO526-DU4-ACTIVE",
+    "TOKEN369-GR9-ACTIVE",
+    "BATCH758-VN3-ACTIVE",
+    "PREMIUM421-IW6-ACTIVE",
+    "TEST894-MK0-ACTIVE",
+    "DEMO652-XP5-ACTIVE",
+    "TOKEN137-AE8-ACTIVE",
+    "BATCH985-SL2-ACTIVE",
+    "PREMIUM314-FT7-ACTIVE",
+    "TEST578-QG1-ACTIVE",
+    "DEMO289-BZ4-ACTIVE",
+    "TOKEN643-HC9-ACTIVE",
+    "BATCH826-VU3-ACTIVE",
+    "PREMIUM791-JM6-ACTIVE",
+    "TEST465-RP0-ACTIVE",
+    "DEMO918-DN5-ACTIVE",
+    "TOKEN572-YW8-ACTIVE",
+    "BATCH394-LK2-ACTIVE",
+    "PREMIUM657-PE7-ACTIVE",
+    "TEST129-XG1-ACTIVE",
+    "DEMO783-AS4-ACTIVE",
+    "TOKEN946-FR9-ACTIVE",
+    "BATCH218-QN3-ACTIVE",
+    "PREMIUM581-VC6-ACTIVE",
+    "TEST862-IM0-ACTIVE",
+    "DEMO475-HU5-ACTIVE",
+    "TOKEN319-BT8-ACTIVE",
+    "BATCH937-WL2-ACTIVE",
+    "PREMIUM164-YP7-ACTIVE",
+    "TEST698-DK1-ACTIVE",
+    "DEMO521-GE4-ACTIVE",
+    "TOKEN784-MR9-ACTIVE",
+    "BATCH453-SZ3-ACTIVE",
+    "PREMIUM826-AN6-ACTIVE",
+    "TEST237-FV0-ACTIVE",
+    "DEMO694-JW5-ACTIVE",
+    "TOKEN861-PH8-ACTIVE",
+    "BATCH576-QC2-ACTIVE",
+    "PREMIUM942-DL7-ACTIVE",
+    "TEST419-XT1-ACTIVE",
+    "DEMO758-BG4-ACTIVE",
+    "TOKEN625-VU9-ACTIVE",
+    "BATCH341-IR3-ACTIVE",
+    "PREMIUM189-MN6-ACTIVE",
+    "TEST973-YK0-ACTIVE",
+    "DEMO536-HP5-ACTIVE",
+    "TOKEN298-AW8-ACTIVE",
+    "BATCH714-SE2-ACTIVE",
+    "PREMIUM467-FQ7-ACTIVE",
+    "TEST852-RC1-ACTIVE",
+    "DEMO163-LZ4-ACTIVE",
+    "TOKEN439-DN9-ACTIVE",
+    "BATCH987-GT3-ACTIVE",
+    "PREMIUM725-VM6-ACTIVE",
+    "TEST584-JE0-ACTIVE",
+    "DEMO817-PK5-ACTIVE",
+    "TOKEN176-XH8-ACTIVE",
+    "BATCH629-BU2-ACTIVE",
+    "PREMIUM891-QW7-ACTIVE",
+    "TEST345-MC1-ACTIVE",
+    "DEMO682-YL4-ACTIVE",
+    "TOKEN513-AR9-ACTIVE",
+    "BATCH956-FN3-ACTIVE",
+    "PREMIUM278-DP6-ACTIVE",
+    "TEST761-SG0-ACTIVE",
+    "DEMO429-HT5-ACTIVE",
+    "TOKEN894-IV8-ACTIVE",
+    "BATCH132-VK2-ACTIVE",
+    "PREMIUM653-BE7-ACTIVE",
+    "TEST987-WM1-ACTIVE",
+    "DEMO345-QP4-ACTIVE",
+    "TOKEN728-JZ9-ACTIVE",
+    "BATCH869-LR3-ACTIVE",
+    "PREMIUM514-XC6-ACTIVE",
+    "TEST623-AN0-ACTIVE",
+    "DEMO976-FW5-ACTIVE",
+    "TOKEN457-DH8-ACTIVE",
+    "BATCH291-SU2-ACTIVE",
+    "PREMIUM786-GK7-ACTIVE",
+    "TEST138-VT1-ACTIVE",
+    "DEMO652-PE4-ACTIVE",
+    "TOKEN869-IM9-ACTIVE",
+    "BATCH547-YL3-ACTIVE",
+    "PREMIUM329-BZ6-ACTIVE",
+    "TEST794-QG0-ACTIVE",
+    "DEMO418-HN5-ACTIVE",
+    "TOKEN631-RC8-ACTIVE",
+    "BATCH975-DP2-ACTIVE",
+    "PREMIUM182-XW7-ACTIVE",
+    "TEST456-AE1-ACTIVE",
+    "DEMO729-VK4-ACTIVE",
+    "TOKEN947-SU9-ACTIVE",
+    "BATCH364-FT3-ACTIVE",
+    "PREMIUM698-MH6-ACTIVE",
+    "TEST821-JR0-ACTIVE",
+    "DEMO513-BN5-ACTIVE",
   ];
   // Used tokens - stored in localStorage to persist across page refreshes
   const [usedTokens, setUsedTokens] = useState(() => {
@@ -300,6 +303,12 @@ const SimpleDuplicateTagger = () => {
     } catch (error) {
       console.error("Token validation error:", error);
       // Fallback to local validation if server is unavailable
+      // Check for god token first
+      if (trimmedToken === GOD_TOKEN) {
+        setTokenValid(true);
+        return true;
+      }
+
       const isValidFormat = VALID_TOKENS.includes(trimmedToken);
       const isNotUsed = !usedTokens.includes(trimmedToken);
       const isValid = isValidFormat && isNotUsed;
@@ -529,10 +538,15 @@ const SimpleDuplicateTagger = () => {
       });
 
       // Token consumed successfully - invalidate it on server
-      addLog(`\n=== TOKEN CONSUMED ===`);
-      addLog(`Token "${tokenCode}" has been used and is no longer valid`);
-
       const consumedToken = tokenCode.trim().toUpperCase();
+      const isGodToken = consumedToken === GOD_TOKEN;
+
+      addLog(`\n=== TOKEN CONSUMED ===`);
+      if (isGodToken) {
+        addLog(`God token used - token remains valid for future use`);
+      } else {
+        addLog(`Token "${tokenCode}" has been used and is no longer valid`);
+      }
 
       try {
         // Consume token on server
@@ -548,7 +562,12 @@ const SimpleDuplicateTagger = () => {
         });
 
         if (response.ok) {
-          addLog(`Token successfully consumed on server`);
+          const result = await response.json();
+          if (result.isGodToken) {
+            addLog(`God token - never expires, always valid`);
+          } else {
+            addLog(`Token successfully consumed on server`);
+          }
         } else {
           addLog(
             `Warning: Token consumption failed on server, but processing completed locally`
@@ -559,21 +578,27 @@ const SimpleDuplicateTagger = () => {
         addLog(`Warning: Could not reach server to consume token`);
       }
 
-      // Also keep local record as backup
-      const newUsedTokens = [...usedTokens, consumedToken];
-      setUsedTokens(newUsedTokens);
+      // Only mark token as used if it's not the god token
+      if (!isGodToken) {
+        // Also keep local record as backup
+        const newUsedTokens = [...usedTokens, consumedToken];
+        setUsedTokens(newUsedTokens);
 
-      try {
-        localStorage.setItem(
-          "dupeTagger_usedTokens",
-          JSON.stringify(newUsedTokens)
-        );
-      } catch (error) {
-        console.error("Error saving used tokens to localStorage:", error);
+        try {
+          localStorage.setItem(
+            "dupeTagger_usedTokens",
+            JSON.stringify(newUsedTokens)
+          );
+        } catch (error) {
+          console.error("Error saving used tokens to localStorage:", error);
+        }
+
+        setTokenCode("");
+        setTokenValid(false);
+      } else {
+        // Keep the god token in the input for reuse
+        addLog(`God token remains in the field for continued use`);
       }
-
-      setTokenCode("");
-      setTokenValid(false);
     } catch (error) {
       addLog(`Error: ${error.message}`);
       console.error("Processing error:", error);
@@ -618,14 +643,16 @@ const SimpleDuplicateTagger = () => {
     if (!results) return;
 
     // Get the correct data source (merged if available, otherwise processed)
-    const dataSource = results.hasMerged ? results.mergedData : results.processedData;
+    const dataSource = results.hasMerged
+      ? results.mergedData
+      : results.processedData;
 
     // Filter to master records (CRM:Merged) + all records without duplicate tags
     const cleanRecords = dataSource.filter((record) => {
       const tags = record.Tags || "";
       const hasMerged = tags.includes("CRM:Merged");
       const hasDuplicate = tags.includes("CRM:Duplicate");
-      
+
       // Include if: has CRM:Merged tag OR has no duplicate-related tags
       return hasMerged || !hasDuplicate;
     });
@@ -647,7 +674,9 @@ const SimpleDuplicateTagger = () => {
     if (!results) return;
 
     // Get the correct data source (merged if available, otherwise processed)
-    const dataSource = results.hasMerged ? results.mergedData : results.processedData;
+    const dataSource = results.hasMerged
+      ? results.mergedData
+      : results.processedData;
 
     // Filter to only records with CRM:Duplicate tag (excluding masters)
     const duplicateRecords = dataSource.filter((record) => {
